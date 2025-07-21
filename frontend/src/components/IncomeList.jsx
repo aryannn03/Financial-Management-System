@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { formatCurrency } from "../utils/expenses";
 
 const IncomeList = ({ onChange }) => {
   const [incomes, setIncomes] = useState([]);
@@ -64,7 +65,7 @@ const IncomeList = ({ onChange }) => {
         <tbody>
           {incomes.map(income => (
             <tr key={income._id} style={{ borderBottom: "1px solid #eee" }}>
-              <td style={{ padding: 8 }}>${Number(income.amount).toFixed(2)}</td>
+              <td style={{ padding: 8 }}>{formatCurrency(Number(income.amount))}</td>
               <td style={{ padding: 8 }}>{income.category}</td>
               <td style={{ padding: 8 }}>{income.date ? new Date(income.date).toLocaleDateString() : ""}</td>
               <td style={{ padding: 8 }}>{income.note}</td>
