@@ -72,7 +72,7 @@ const Login = () => {
               onChange={e => setEmail(e.target.value)}
               required
               disabled={loading}
-              autocomplete="username"
+              autoComplete="username"
             />
           </div>
           <div className="auth-input-group">
@@ -88,7 +88,7 @@ const Login = () => {
               onChange={e => setPassword(e.target.value)}
               required
               disabled={loading}
-              autocomplete="current-password"
+              autoComplete="current-password"
             />
             <button type="button" className="auth-show-btn" onClick={() => setShowPassword(v => !v)} tabIndex={-1}>
               {showPassword ? "Hide" : "Show"}
