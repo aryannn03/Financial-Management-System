@@ -73,6 +73,7 @@ const ExpenseForm = ({ onAdd }) => {
             onChange={(e) => setDescription(e.target.value)}
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-expense-light focus:border-transparent transition-all"
             disabled={isSubmitting}
+            autocomplete="off"
           />
         </div>
         <div>
@@ -90,6 +91,7 @@ const ExpenseForm = ({ onAdd }) => {
             onChange={(e) => setAmount(e.target.value)}
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-expense-light focus:border-transparent transition-all"
             disabled={isSubmitting}
+            autocomplete="off"
           />
         </div>
         <div>
@@ -129,6 +131,7 @@ const ExpenseForm = ({ onAdd }) => {
             onChange={(e) => setDate(e.target.value)}
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-expense-light focus:border-transparent transition-all"
             disabled={isSubmitting}
+            autocomplete="off"
           />
         </div>
         <button

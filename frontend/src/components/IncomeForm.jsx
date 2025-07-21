@@ -59,6 +59,7 @@ const IncomeForm = ({ onAdd }) => {
             min="0"
             step="0.01"
             style={{ flex: 1, borderRadius: 8, border: '1.5px solid #e0e0e0', padding: '0.7em', fontSize: 16 }}
+            autocomplete="off"
           />
           <select id="income-category" name="category" value={category} onChange={e => setCategory(e.target.value)} style={{ flex: 1, borderRadius: 8, border: '1.5px solid #e0e0e0', padding: '0.7em', fontSize: 16 }}>
             {defaultCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
@@ -73,6 +74,7 @@ const IncomeForm = ({ onAdd }) => {
             onChange={e => setDate(e.target.value)}
             required
             style={{ flex: 1, borderRadius: 8, border: '1.5px solid #e0e0e0', padding: '0.7em', fontSize: 16 }}
+            autocomplete="off"
           />
           <input
             type="text"
@@ -82,6 +84,7 @@ const IncomeForm = ({ onAdd }) => {
             value={note}
             onChange={e => setNote(e.target.value)}
             style={{ flex: 2, borderRadius: 8, border: '1.5px solid #e0e0e0', padding: '0.7em', fontSize: 16 }}
+            autocomplete="off"
           />
         </div>
         <button type="submit" disabled={loading} style={{ width: "100%", padding: '0.8em', background: 'linear-gradient(90deg,#7b2ff2,#f357a8)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: 17, marginTop: 4, boxShadow: '0 1px 4px rgba(123,47,242,0.08)' }}>
