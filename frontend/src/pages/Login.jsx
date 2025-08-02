@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const validate = () => {
     if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
@@ -25,22 +27,26 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Login attempt with:", { email, password: password ? "***" : "empty" });
     setError("");
     setSuccess("");
     if (!validate()) return;
     setLoading(true);
     try {
+      console.log("Sending request to backend...");
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+      console.log("Response status:", res.status);
       const data = await res.json();
+      console.log("Response data:", data);
       if (!res.ok) throw new Error(data.message || "Login failed");
-      localStorage.setItem("token", data.token);
+      login(data.user, data.token);
       setSuccess("Login successful! Redirecting...");
-      setTimeout(() => navigate("/"), 1200);
     } catch (err) {
+      console.error("Login error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -72,7 +78,7 @@ const Login = () => {
               onChange={e => setEmail(e.target.value)}
               required
               disabled={loading}
-              autoComplete="username"
+              autoComplete="email"
             />
           </div>
           <div className="auth-input-group">

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -10,6 +11,7 @@ const Signup = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const validate = () => {
     if (name.trim().length < 2) {
@@ -41,9 +43,8 @@ const Signup = () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Signup failed");
-      localStorage.setItem("token", data.token);
+      login(data.user, data.token);
       setSuccess("Signup successful! Redirecting...");
-      setTimeout(() => navigate("/"), 1200);
     } catch (err) {
       setError(err.message);
     } finally {
