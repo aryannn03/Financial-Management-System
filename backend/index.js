@@ -18,7 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/expenses', expensesRoutes);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -26,5 +26,7 @@ mongoose.connect(process.env.MONGO_URL, {
 })
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    console.log("DB Connected");
+    
   })
   .catch((err) => console.error('MongoDB connection error:', err)); 
