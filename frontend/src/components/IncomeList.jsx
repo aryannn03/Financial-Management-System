@@ -1,52 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { formatCurrency } from "../utils/expenses";
-
-const IncomeList = ({ onChange }) => {
-  const [incomes, setIncomes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchIncomes = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/income", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch income");
-      setIncomes(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchIncomes();
-    // eslint-disable-next-line
-  }, []);
-
+import { Trash2 } from "lucide-react";
+const IncomeList = ({ incomes = [], onDelete, loading = false }) => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this income entry?")) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/income/${id}`, {
+      const res = await fetch(`https://finance-backend-g8ab.onrender.com/api/income/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to delete income");
-      setIncomes(incomes.filter(i => i._id !== id));
-      if (onChange) onChange();
+
+      // ✅ Update parent instantly
+      if (onDelete) onDelete(id);
     } catch (err) {
       alert(err.message);
     }
   };
 
   if (loading) return <div>Loading income...</div>;
-  if (error) return <div style={{ color: "red" }}>{error}</div>;
   if (!incomes.length) return <div>No income entries yet.</div>;
 
   return (
@@ -63,14 +36,30 @@ const IncomeList = ({ onChange }) => {
           </tr>
         </thead>
         <tbody>
-          {incomes.map(income => (
+          {incomes.map((income) => (
             <tr key={income._id} style={{ borderBottom: "1px solid #eee" }}>
-              <td style={{ padding: 8 }}>{formatCurrency(Number(income.amount))}</td>
+              <td style={{ padding: 8 }}>
+                {formatCurrency(Number(income.amount))}
+              </td>
               <td style={{ padding: 8 }}>{income.category}</td>
-              <td style={{ padding: 8 }}>{income.date ? new Date(income.date).toLocaleDateString() : ""}</td>
+              <td style={{ padding: 8 }}>
+                {income.date
+                  ? new Date(income.date).toLocaleDateString()
+                  : ""}
+              </td>
               <td style={{ padding: 8 }}>{income.note}</td>
               <td style={{ padding: 8 }}>
-                <button onClick={() => handleDelete(income._id)} style={{ color: "#e53935", border: "none", background: "none", cursor: "pointer" }}>Delete</button>
+                <button
+                  onClick={() => handleDelete(income._id)}
+                  style={{
+                    color: "#e53935",
+                    border: "none",
+                    background: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Trash2 size={18} />
+                </button>
               </td>
             </tr>
           ))}
@@ -80,4 +69,4 @@ const IncomeList = ({ onChange }) => {
   );
 };
 
-export default IncomeList; 
+export default IncomeList;

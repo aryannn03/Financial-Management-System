@@ -10,21 +10,37 @@ import { useExpenses } from "../context/ExpenseContext";
 
 const Dashboard = () => {
   const [incomeList, setIncomeList] = useState([]);
+  const [incomeLoading, setIncomeLoading] = useState(true);
   const { expenses } = useExpenses();
 
   // Fetch income
   const fetchIncome = async () => {
-    const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/api/income", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (res.ok) setIncomeList(data);
+    setIncomeLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("https://finance-backend-g8ab.onrender.com/api/income", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok) setIncomeList(data);
+    } finally {
+      setIncomeLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchIncome();
   }, []);
+
+  // ✅ Add income instantly
+  const handleAddIncome = (newIncome) => {
+    setIncomeList((prev) => [...prev, newIncome]);
+  };
+
+  // ✅ Delete income instantly
+  const handleDeleteIncome = (id) => {
+    setIncomeList((prev) => prev.filter((income) => income._id !== id));
+  };
 
   return (
     <div className="space-y-8">
@@ -32,8 +48,12 @@ const Dashboard = () => {
       <IncomeSummary incomeList={incomeList} expenseList={expenses} />
 
       {/* Income management */}
-      <IncomeForm onAdd={fetchIncome} />
-      <IncomeList onChange={fetchIncome} />
+      <IncomeForm onAdd={handleAddIncome} />
+      <IncomeList
+        incomes={incomeList}
+        loading={incomeLoading}
+        onDelete={handleDeleteIncome}
+      />
 
       {/* Expense management */}
       <ExpenseSummary />
