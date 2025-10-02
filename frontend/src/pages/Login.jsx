@@ -34,7 +34,7 @@ const Login = () => {
     setLoading(true);
     try {
       console.log("Sending request to backend...");
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+              const res = await fetch("https://finance-backend-g8ab.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

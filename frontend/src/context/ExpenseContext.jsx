@@ -46,7 +46,7 @@ export const ExpenseProvider = ({ children }) => {
       dispatch({ type: "SET_LOADING", payload: true });
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/expenses", {
+        const res = await fetch("https://finance-backend-g8ab.onrender.com/api/expenses", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -68,7 +68,7 @@ export const ExpenseProvider = ({ children }) => {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/expenses", {
+              const res = await fetch("https://finance-backend-g8ab.onrender.com/api/expenses", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export const ExpenseProvider = ({ children }) => {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/expenses/${id}`, {
+              const res = await fetch(`https://finance-backend-g8ab.onrender.com/api/expenses/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
